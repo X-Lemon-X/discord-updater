@@ -28,11 +28,12 @@ def main():
     install_candidate = [int(x) for x in version.split('.')]
     if not compare_version(install_candidate, installed_version):
       print("Current installed version is up to date.")
-      return
+      return 0
     else:
       print(f"Current installed version ({installed_version}) is lower than the latest version ({version}).")
   except Exception as e:
     print("Failed to retrieve installed version of Discord.")
+    return 1
     
   discord_file = Path(__file__).with_name(f'discord-{version}.deb') 
   print(f'Downloading: {dl_url}')
@@ -47,14 +48,16 @@ def main():
     subprocess.Popen(command,shell=True).wait()
   except subprocess.CalledProcessError:
     print("Failed to install Discord.")
-    return
-
+    return 1
+  
   print("Discord has been successfully updated.")
   discord_file.unlink()
-  print("Removed downloaded file.")
+  print("Removed .deb file.")
   if os.path.exists(discord_file):
     os.remove(discord_file)
   print("Done.")
+  return 0
 
 if __name__ == '__main__':
-  main()
+  exit_code = main()
+  exit(exit_code)
