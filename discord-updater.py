@@ -19,23 +19,23 @@ def main():
   dl_url = r.headers['location']
   filename = dl_url.split('?')[0].split('/')[-1]
   m = re.search(r'(\d+\.\d+\.\d+)', filename)
-  version = m.group(1)
+  latest = m.group(1)
   # Use apt to check the installed version of Discord
   try:
     output = subprocess.check_output(['apt-cache', 'policy', 'discord']).decode('utf-8')
-    installed_version = re.search(r'Installed:\s*(\S+)', output).group(1)
-    installed_version = [int(x) for x in installed_version.split('.')]
-    install_candidate = [int(x) for x in version.split('.')]
+    installed = re.search(r'Installed:\s*(\S+)', output).group(1)
+    installed_version = [int(x) for x in installed.split('.')]
+    install_candidate = [int(x) for x in latest.split('.')]
     if not compare_version(install_candidate, installed_version):
-      print("Current installed version is up to date.")
+      print(f"Current installed discord-{installed} is up to date.")
       return 0
     else:
-      print(f"Current installed version ({installed_version}) is lower than the latest version ({version}).")
+      print(f"Current installed version {installed}  upgrading to: ({latest}).")
   except Exception as e:
     print("Failed to retrieve installed version of Discord.")
     return 1
     
-  discord_file = Path(__file__).with_name(f'discord-{version}.deb') 
+  discord_file = Path(__file__).with_name(f'discord-{latest}.deb') 
   print(f'Downloading: {dl_url}')
   with requests.get(dl_url, stream=True) as r:
     with discord_file.open('wb') as fp:
@@ -43,14 +43,13 @@ def main():
         fp.write(chunk)
   try:
     command = f"sudo dpkg -i {discord_file}"
-    print(f"Installing Discord {version}...")
+    print(f"Installing Discord {latest}...")
     print(f"Running command: {command}")
     subprocess.Popen(command,shell=True).wait()
   except subprocess.CalledProcessError:
     print("Failed to install Discord.")
     return 1
-  
-  print("Discord has been successfully updated.")
+  print("Discord has been successfully installed.")
   discord_file.unlink()
   print("Removed .deb file.")
   if os.path.exists(discord_file):
