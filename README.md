@@ -1,10 +1,11 @@
 # Discord Updater
 
-This repository contains the source code for the Discord Updater. 
+This repository contains the source code for the handy script to update Discord automatically. 
+No longer anoying pops up to update your discord manually.
 
 ## Description
-
-Discord Updater is a tool that automatically updates your Discord when new version is avaialbel no longer anoying pops up to update your discord manually.
+Discord Updater is a tool that automatically updates your Discord when new version is available.
+Using deb package.
 
 ## Installation
 To run this project locally, follow these steps:
