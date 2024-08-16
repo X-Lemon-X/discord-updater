@@ -33,7 +33,7 @@ def main():
       print(f"Current installed version {installed}  upgrading to: ({latest}).")
   except Exception as e:
     print("Failed to retrieve installed version of Discord.")
-    return 1
+    # return 1
     
   discord_file = Path(__file__).with_name(f'discord-{latest}.deb') 
   print(f'Downloading: {dl_url}')
