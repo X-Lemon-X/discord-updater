@@ -16,6 +16,7 @@ To run this project locally, follow these steps:
 ```bash
 sudo crontab -e
 ```
+
 4. Add the following line to the end of the file
 ```bash
 @reboot /path/to/this/repo/updater-discord.sh
